@@ -514,6 +514,26 @@
       letter-spacing: 1.5px;
       color: #b0a16a;
       margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .swish-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      background: radial-gradient(circle at 0% 0%, #ff5f6d, #ffc371 40%, #65c8ff 75%, #6a60ff 100%);
+      min-width: 46px;
+      white-space: nowrap;
     }
 
     .registry-swish-row {
@@ -521,13 +541,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
-    }
-
-    .registry-icon {
-      font-size: 16px;
-      opacity: 0.9;
     }
 
     .registry-label {
@@ -844,21 +859,21 @@
     <h2 class="section-title">Registry</h2>
     <div class="registry-content" id="registry-text">
       Having you celebrate with us is the most meaningful gift we could receive.
+      Please know that your love and presence are more than enough, and there is absolutely no obligation to give a gift.
       Should you wish to honor us with a present, we kindly invite you to contribute
       to our honeymoon, helping us create memories that will last a lifetime.
     </div>
 
     <div class="registry-details">
       <div class="registry-details-title">
-        If you would like to give a gift, you can do so via Swish:
+        <span>If you would like to give a gift, you can do so via</span>
+        <span class="swish-pill">Swish</span>
       </div>
       <div class="registry-swish-row">
-        <span class="registry-icon">💸</span>
         <span class="registry-label">Bride – Isabella:</span>
         <span class="registry-value">+46 76-406 0868</span>
       </div>
       <div class="registry-swish-row">
-        <span class="registry-icon">💸</span>
         <span class="registry-label">Groom – Roshan:</span>
         <span class="registry-value">+46 72-835 9978</span>
       </div>
@@ -898,7 +913,7 @@
       schedule_intro: "Join us for a day of celebration, love, and unforgettable memories as we blend two beautiful cultures",
       rsvp_message: "Please RSVP before 4th June, 2026",
       rsvp_contact: "Contact us at: +46 72835-9978",
-      registry_text: "Having you celebrate with us is the most meaningful gift we could receive. Should you wish to honor us with a present, we kindly invite you to contribute to our honeymoon, helping us create memories that will last a lifetime.",
+      registry_text: "Having you celebrate with us is the most meaningful gift we could receive. Please know that your love and presence are more than enough, and there is absolutely no obligation to give a gift. Should you wish to honor us with a present, we kindly invite you to contribute to our honeymoon, helping us create memories that will last a lifetime.",
       background_color: "#ffffff",
       hero_background: "#1a1a2e",
       primary_text_color: "#1a1a2e",
