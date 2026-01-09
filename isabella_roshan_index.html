@@ -269,8 +269,6 @@
       text-indent: 0;
     }
 
-
-
     .story-divider {
       text-align: center;
       margin: 50px 0;
@@ -501,6 +499,62 @@
       text-align: center;
     }
 
+    .registry-details {
+      max-width: 700px;
+      margin: 28px auto 0 auto;
+      font-size: 14px;
+      color: #7a7a7a;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .registry-details-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #b0a16a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .swish-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      background: radial-gradient(circle at 0% 0%, #ff5f6d, #ffc371 40%, #65c8ff 75%, #6a60ff 100%);
+      min-width: 46px;
+      white-space: nowrap;
+    }
+
+    .registry-swish-row {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .registry-label {
+      font-weight: 500;
+      margin-right: 2px;
+    }
+
+    .registry-value {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0.5px;
+    }
+
     /* Footer */
     .footer {
       background: #1a1a2e;
@@ -569,13 +623,23 @@
       .om-symbol {
         font-size: 36px;
       }
+
+      .registry-content {
+        padding: 0 10px;
+        font-size: 16px;
+      }
+
+      .registry-details {
+        font-size: 13px;
+      }
     }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
- <body><!-- Hero Section -->
+ <body>
+  <!-- Hero Section -->
   <div class="hero">
    <div class="hero-content">
     <div class="om-symbol">
@@ -584,7 +648,12 @@
     <div class="hero-label">
      Save The Date
     </div>
-    <div class="names"><span class="floral-decoration">🌸</span> <span id="bride-name">Roshan</span> <span class="ampersand">&amp;</span> <span id="groom-name">Isabella</span> <span class="floral-decoration">🌸</span>
+    <div class="names">
+      <span class="floral-decoration">🌸</span>
+      <span id="bride-name">Roshan</span>
+      <span class="ampersand">&amp;</span>
+      <span id="groom-name">Isabella</span>
+      <span class="floral-decoration">🌸</span>
     </div>
     <div class="date" id="wedding-date">
      Saturday, July 4th, 2026
@@ -594,22 +663,39 @@
       Days Until Forever
      </div>
      <div class="countdown">
-      <div class="countdown-item"><span class="countdown-number" id="days">0</span> <span class="countdown-text">Days</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="days">0</span>
+        <span class="countdown-text">Days</span>
       </div>
-      <div class="countdown-item"><span class="countdown-number" id="hours">0</span> <span class="countdown-text">Hours</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="hours">0</span>
+        <span class="countdown-text">Hours</span>
       </div>
-      <div class="countdown-item"><span class="countdown-number" id="minutes">0</span> <span class="countdown-text">Minutes</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="minutes">0</span>
+        <span class="countdown-text">Minutes</span>
       </div>
-      <div class="countdown-item"><span class="countdown-number" id="seconds">0</span> <span class="countdown-text">Seconds</span>
+      <div class="countdown-item">
+        <span class="countdown-number" id="seconds">0</span>
+        <span class="countdown-text">Seconds</span>
       </div>
      </div>
     </div>
    </div>
-  </div><!-- Navigation -->
+  </div>
+
+  <!-- Navigation -->
   <nav class="nav">
-   <div class="nav-content"><a class="nav-link" onclick="scrollToSection('story')">Our Story</a> <a class="nav-link" onclick="scrollToSection('details')">Details</a> <a class="nav-link" onclick="scrollToSection('schedule')">Schedule</a> <a class="nav-link" onclick="scrollToSection('rsvp')">RSVP</a> <a class="nav-link" onclick="scrollToSection('registry')">Registry</a>
+   <div class="nav-content">
+    <a class="nav-link" onclick="scrollToSection('story')">Our Story</a>
+    <a class="nav-link" onclick="scrollToSection('details')">Details</a>
+    <a class="nav-link" onclick="scrollToSection('schedule')">Schedule</a>
+    <a class="nav-link" onclick="scrollToSection('rsvp')">RSVP</a>
+    <a class="nav-link" onclick="scrollToSection('registry')">Registry</a>
    </div>
-  </nav><!-- Story Section -->
+  </nav>
+
+  <!-- Story Section -->
   <div class="story-section" id="story">
    <div class="section">
     <h2 class="section-title">Our Story</h2>
@@ -630,7 +716,9 @@
      <p class="story-closing">And they did. Beautifully.</p>
     </div>
    </div>
-  </div><!-- Event Details Section -->
+  </div>
+
+  <!-- Event Details Section -->
   <div class="section" id="details">
    <h2 class="section-title">When &amp; Where</h2>
    <div class="events-grid">
@@ -659,8 +747,8 @@
       Reception
      </div>
      <div class="event-info" id="reception-venue">
-      Dinner Party at Eatly Stockholm
-     </div>
+      Dinner Party at Sjöfartshuset Stockholm 
+      Skeppsbron 10
      <div class="event-info" id="reception-address">
       Stockholm, Sweden
      </div>
@@ -669,7 +757,9 @@
      </div>
     </div>
    </div>
-  </div><!-- Schedule Section -->
+  </div>
+
+  <!-- Schedule Section -->
   <div class="schedule-section" id="schedule">
    <div class="section">
     <h2 class="section-title">Schedule</h2>
@@ -718,7 +808,7 @@
        Dinner Reception
       </div>
       <div class="timeline-description">
-       Dinner party at Eatly Stockholm with toasts and celebration
+       Dinner party at Sjöfartshuset Stockholm with toasts and celebration
       </div>
      </div>
      <div class="timeline-item">
@@ -745,33 +835,59 @@
      </div>
     </div>
    </div>
-  </div><!-- RSVP Section -->
+  </div>
+
+  <!-- RSVP Section -->
   <div class="rsvp-section" id="rsvp">
    <div class="section">
     <h2 class="section-title">RSVP</h2>
     <div class="rsvp-content">
      <div class="rsvp-message" id="rsvp-message">
-      Please RSVP before 4th June, 2026
-     </div><a href="#" class="rsvp-button" id="rsvp-button">Respond Here</a>
+      Please RSVP before 4th May, 2026
+     </div>
+     <a href="#" class="rsvp-button" id="rsvp-button">Respond Here</a>
      <div style="margin-top: 30px; font-size: 16px;" id="rsvp-contact">
       Contact us at: +46 72835-9978
      </div>
     </div>
    </div>
-  </div><!-- Registry Section -->
+  </div>
+
+  <!-- Registry Section -->
   <div class="registry-section" id="registry">
    <div class="section">
     <h2 class="section-title">Registry</h2>
     <div class="registry-content" id="registry-text">
-     Your presence means the world to us, and that is the greatest gift we could ask for. However, if you wish to honor us with a gift, we have registered at a few of our favorite stores for items that will help us build our life together.
+      Having you celebrate with us is the most meaningful gift we could receive.
+      Please know that your love and presence are more than enough, and there is absolutely no obligation to give a gift.
+      Should you wish to honor us with a present, we kindly invite you to contribute
+      to our Travel Dream, exploring different parts of the world, helping us create memories that will last a lifetime.
+    </div>
+
+    <div class="registry-details">
+      <div class="registry-details-title">
+        <span>If you would like to give a gift, you can do so via</span>
+        <span class="swish-pill">Swish</span>
+      </div>
+      <div class="registry-swish-row">
+        <span class="registry-label">Bride – Isabella:</span>
+        <span class="registry-value">+46 76-406 0868</span>
+      </div>
+      <div class="registry-swish-row">
+        <span class="registry-label">Groom – Roshan:</span>
+        <span class="registry-value">+46 72-835 9978</span>
+      </div>
     </div>
    </div>
-  </div><!-- Footer -->
+  </div>
+
+  <!-- Footer -->
   <div class="footer">
    <div style="font-size: 36px; margin-bottom: 20px; color: #d4af37; opacity: 0.8;">
     🕉️
    </div>
-   <div class="footer-names"><span id="footer-bride">Roshan</span> &amp; <span id="footer-groom">Isabella</span>
+   <div class="footer-names">
+    <span id="footer-bride">Roshan</span> &amp; <span id="footer-groom">Isabella</span>
    </div>
    <div class="footer-date" id="footer-date">
     Saturday, July 4th, 2026
@@ -780,6 +896,7 @@
     🌸 ❀ 🌸
    </div>
   </div>
+
   <script>
     const defaultConfig = {
       bride_name: "Roshan",
@@ -789,14 +906,14 @@
       ceremony_venue: "Hedvig Eleonora Church",
       ceremony_address: "Storgatan 2, 114 51 Stockholm",
       ceremony_time: "16:30 PM",
-      reception_venue: "Dinner Party at Eatly Stockholm",
-      reception_address: "Stockholm, Sweden",
+      reception_venue: "Dinner Party at Sjöfartshuset Stockholm",
+      reception_address: "Skeppsbron 10",
       reception_time: "18:30 PM",
       story_text: "In 2023, Isabella was confidently studying string theory, convinced that invisible cosmic threads tie the right people together. Roshan, meanwhile, was simply minding his own business and overthinking his grocery list, trying to get through life.\n\nNaturally, that's when he walked straight into her.\n\nTheir unexpected collision set off a conversation that felt like the universe tugging two strings from opposite corners of the planet! One from the beautiful country Sweden, the other from the mystical land of India.\n\n✦ ✦ ✦\n\nTheir intercontinental entanglement quickly led to a first date at Moderna Museet, wandering through modern art that made them both question whether they were looking at a masterpiece or a misplaced construction tool.\n\nAs the relationship grew, so did Isabella's spice tolerance along with Roshan's patience level! From \"Is this mild?\" to \"Okay… that's spicy and I love it,\" Bella has achieved levels of bravery respected across all Indian households.\n\n✦ ✦ ✦\n\nBy the end, Isabella's string theory started looking suspiciously like destiny, and Roshan was no longer just minding his business. He was happily, permanently entangled.\n\nNow they are getting married — proof that when two people collide, the universe truly knows what it's doing (even if Roshan still doesn't understand it).\n\nAnd they did. Beautifully.",
       schedule_intro: "Join us for a day of celebration, love, and unforgettable memories as we blend two beautiful cultures",
       rsvp_message: "Please RSVP before 4th June, 2026",
       rsvp_contact: "Contact us at: +46 72835-9978",
-      registry_text: "Your presence means the world to us, and that is the greatest gift we could ask for. However, if you wish to honor us with a gift, we have registered at a few of our favorite stores for items that will help us build our life together.",
+      registry_text: "Having you celebrate with us is the most meaningful gift we could receive. Please know that your love and presence are more than enough, and there is absolutely no obligation to give a gift. Should you wish to honor us with a present, we kindly invite you to contribute to our honeymoon, helping us create memories that will last a lifetime.",
       background_color: "#ffffff",
       hero_background: "#1a1a2e",
       primary_text_color: "#1a1a2e",
@@ -904,6 +1021,7 @@
       document.getElementById('reception-venue').textContent = config.reception_venue || defaultConfig.reception_venue;
       document.getElementById('reception-address').textContent = config.reception_address || defaultConfig.reception_address;
       document.getElementById('reception-time').textContent = config.reception_time || defaultConfig.reception_time;
+      
       const storyContainer = document.getElementById('story-text-container');
       if (storyContainer) {
         const storyText = config.story_text || defaultConfig.story_text;
@@ -918,6 +1036,7 @@
           }
         }).join('');
       }
+
       document.getElementById('schedule-intro').textContent = config.schedule_intro || defaultConfig.schedule_intro;
       document.getElementById('rsvp-message').textContent = config.rsvp_message || defaultConfig.rsvp_message;
       document.getElementById('rsvp-contact').textContent = config.rsvp_contact || defaultConfig.rsvp_contact;
@@ -1016,3 +1135,13 @@
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ffdde6a48513b8',t:'MTc2MzM4OTIwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
 </html>
+
+
+
+
+
+
+
+
+
+
