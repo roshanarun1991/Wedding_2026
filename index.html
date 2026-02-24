@@ -888,6 +888,18 @@
     }
 
     /* =========
+       Confetti canvas (luxury)
+    ========= */
+    #confettiCanvas{
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5000; /* above everything */
+    }
+
+    /* =========
        Responsive
     ========= */
     @media (max-width: 768px) {
@@ -912,8 +924,8 @@
 </head>
 
 <body>
-  <!-- ✅ Confetti canvas (fixed overlay) -->
-  <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:2500"></canvas>
+  <!-- Luxury Confetti Canvas (plays once on open) -->
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
 
   <!-- Hero Section -->
   <div class="hero">
@@ -990,6 +1002,7 @@
   <div class="section" id="details">
     <h2 class="section-title">When &amp; Where</h2>
 
+    <!-- Dress code (keep your design language) -->
     <div class="whenwhere-subhead">
       <div class="whenwhere-divider"></div>
       <div class="dress-code-line">
@@ -999,11 +1012,13 @@
     </div>
 
     <div class="events-grid">
+      <!-- Ceremony -->
       <div class="event-card">
         <div class="event-icon">💒</div>
         <div class="event-title">Ceremony</div>
         <div class="event-info" id="ceremony-venue">Hedvig Eleonora Church</div>
         <div class="event-info" id="ceremony-address">Storgatan 2, 114 51 Stockholm</div>
+
         <div class="event-time"><span>🕓</span><span id="ceremony-time">16:30 PM</span></div>
 
         <div class="event-actions">
@@ -1022,11 +1037,13 @@
         </div>
       </div>
 
+      <!-- Reception -->
       <div class="event-card">
         <div class="event-icon">🥂</div>
         <div class="event-title">Reception</div>
         <div class="event-info" id="reception-venue">Dinner Party at Sjöfartshuset Stockholm</div>
         <div class="event-info" id="reception-address">Skeppsbron 10, Stockholm, Sweden</div>
+
         <div class="event-time"><span>🍾</span><span id="reception-time">18:30 PM</span></div>
 
         <div class="event-actions">
@@ -1057,17 +1074,17 @@
 
       <div class="timeline">
         <div class="timeline-item">
-          <div class="timeline-time">16:15 PM</div>
+          <div class="timeline-time">16:00 PM</div>
           <div class="timeline-event">Guest Arrival</div>
           <div class="timeline-description">Please arrive early to find your seats at the church</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-time">16:45 PM</div>
+          <div class="timeline-time">16:30 PM</div>
           <div class="timeline-event">Ceremony Begins</div>
           <div class="timeline-description">The celebration of our union at Hedvig Eleonora Church</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-time">17:45 PM</div>
+          <div class="timeline-time">17:30 PM</div>
           <div class="timeline-event">Photos &amp; Celebration</div>
           <div class="timeline-description">Join us for photos and congratulations</div>
         </div>
@@ -1077,12 +1094,12 @@
           <div class="timeline-description">Dinner party at Sjöfartshuset Stockholm with toasts and celebration</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-time">22:00 PM</div>
+          <div class="timeline-time">21:00 PM</div>
           <div class="timeline-event">First Dance</div>
           <div class="timeline-description">Our first dance as a married couple</div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-time">22:30 PM</div>
+          <div class="timeline-time">21:30 PM</div>
           <div class="timeline-event">Dancing &amp; Celebration</div>
           <div class="timeline-description">Let's dance the night away!</div>
         </div>
@@ -1451,6 +1468,247 @@ And they did. Beautifully.`,
       }
     }
 
+    /* ==========================================================
+       LUXURY CONFETTI (plays ONCE on open, slower fall)
+       - curated palette: gold/pearl/blush/navy
+       - larger pieces, fewer particles
+       - slow drift + long lifetime
+       - subtle foil highlight
+       ========================================================== */
+    (function luxuryConfetti(){
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      let W=0, H=0, dpr=1;
+      let particles = [];
+      let raf = null;
+      let played = false;
+
+      const palette = [
+        '#D4AF37', '#E6C76A', '#B8872B', // golds
+        '#FFF6E8', '#F3EFE6',            // pearl/ivory
+        '#FF5F6D', '#F7A1B0',            // blush
+        '#10162B'                        // deep navy
+      ];
+
+      const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function resize(){
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = Math.floor(W*dpr);
+        canvas.height = Math.floor(H*dpr);
+        canvas.style.width = W+'px';
+        canvas.style.height = H+'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+
+      function rand(a,b){ return Math.random()*(b-a)+a; }
+      function pick(arr){ return arr[(Math.random()*arr.length)|0]; }
+
+      function hexToRgb(hex){
+        const h = hex.replace('#','').trim();
+        const full = h.length === 3 ? h.split('').map(c=>c+c).join('') : h;
+        const n = parseInt(full, 16);
+        return { r:(n>>16)&255, g:(n>>8)&255, b:n&255 };
+      }
+      function mix(hexA, hexB, t){
+        const a = hexToRgb(hexA), b = hexToRgb(hexB);
+        const r = Math.round(a.r + (b.r-a.r)*t);
+        const g = Math.round(a.g + (b.g-a.g)*t);
+        const b2 = Math.round(a.b + (b.b-a.b)*t);
+        return `rgb(${r},${g},${b2})`;
+      }
+
+      function petalPath(c, w, h){
+        c.beginPath();
+        c.moveTo(0, -h*0.5);
+        c.bezierCurveTo(w*0.55, -h*0.35, w*0.55, h*0.25, 0, h*0.5);
+        c.bezierCurveTo(-w*0.55, h*0.25, -w*0.55, -h*0.35, 0, -h*0.5);
+        c.closePath();
+      }
+
+      function spawnOnce(){
+        if(played) return;
+        played = true;
+
+        // center burst from upper third for elegant rain-down
+        const x0 = W * 0.5;
+        const y0 = H * 0.18;
+
+        // fewer but bigger = luxury
+        const count = prefersReduced ? 0 : Math.round(Math.min(130, Math.max(85, W/10)));
+        if(!count) return;
+
+        for(let i=0;i<count;i++){
+          const color = pick(palette);
+          const shapeRoll = Math.random();
+          const shape =
+            shapeRoll < 0.14 ? 'petal' :
+            shapeRoll < 0.24 ? 'star' :
+            shapeRoll < 0.40 ? 'streamer' :
+            shapeRoll < 0.55 ? 'circle' : 'rect';
+
+          const sizeBase = (shape === 'streamer') ? rand(22,48) : rand(12,26);
+          const w = (shape === 'streamer') ? sizeBase*0.35 : rand(10, 26);
+          const h = (shape === 'streamer') ? sizeBase : rand(12, 40);
+
+          particles.push({
+            x: x0 + rand(-W*0.20, W*0.20),
+            y: y0 + rand(-20, 30),
+            vx: rand(-1.6, 1.6),                  // gentle sideways
+            vy: rand(-5.2, -1.2),                 // upward kick, not explosive
+            g: rand(0.035, 0.095),                // slow fall
+            drag: rand(0.989, 0.996),             // floaty
+            w, h,
+            r: rand(0, Math.PI*2),
+            vr: rand(-0.06, 0.06),                // slow rotation
+            tilt: rand(-0.7, 0.7),
+            life: 0,
+            maxLife: rand(260, 520),              // longer lifetime = slow elegance
+            color,
+            color2: mix(color, '#FFFFFF', 0.35),  // foil-ish blend
+            highlight: 'rgba(255,255,255,0.35)',
+            shape,
+            wobbleSeed: rand(0, 1000)
+          });
+        }
+
+        if(!raf) raf = requestAnimationFrame(loop);
+      }
+
+      function drawParticle(p){
+        // gentle wind drift
+        const wind = Math.sin((p.life*0.012) + p.wobbleSeed) * 0.35;
+        p.vx += wind * 0.006;
+
+        // integrate
+        p.vx *= p.drag;
+        p.vy = p.vy * p.drag + p.g;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.r += p.vr;
+
+        // fade out towards end
+        const t = p.life / p.maxLife;
+        const alpha = t < 0.08 ? (t/0.08) : (t > 0.78 ? Math.max(0, 1 - (t-0.78)/0.22) : 1);
+
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r);
+
+        // "foil" gradient
+        const grad = ctx.createLinearGradient(-p.w/2, -p.h/2, p.w/2, p.h/2);
+        grad.addColorStop(0, p.color2);
+        grad.addColorStop(0.45, p.color);
+        grad.addColorStop(1, p.color2);
+        ctx.fillStyle = grad;
+
+        if(p.shape === 'circle'){
+          ctx.beginPath();
+          ctx.arc(0,0, Math.max(5, p.w*0.45), 0, Math.PI*2);
+          ctx.fill();
+
+          // subtle highlight
+          ctx.globalAlpha *= 0.45;
+          ctx.strokeStyle = p.highlight;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          ctx.arc(-1.2,-1.2, Math.max(3.8, p.w*0.33), 0, Math.PI*1.35);
+          ctx.stroke();
+
+        } else if(p.shape === 'petal'){
+          petalPath(ctx, p.w*0.95, p.h*0.95);
+          ctx.fill();
+
+          ctx.globalAlpha *= 0.45;
+          ctx.strokeStyle = p.highlight;
+          ctx.lineWidth = 1;
+          petalPath(ctx, p.w*0.86, p.h*0.86);
+          ctx.stroke();
+
+        } else if(p.shape === 'star'){
+          // simple 5-point star
+          const spikes = 5;
+          const outer = Math.max(7, p.w*0.55);
+          const inner = outer*0.45;
+          ctx.beginPath();
+          for(let i=0;i<spikes*2;i++){
+            const ang = (Math.PI/spikes)*i;
+            const rad = (i%2===0) ? outer : inner;
+            ctx.lineTo(Math.cos(ang)*rad, Math.sin(ang)*rad);
+          }
+          ctx.closePath();
+          ctx.fill();
+
+          ctx.globalAlpha *= 0.55;
+          ctx.fillStyle = 'rgba(255,255,255,0.40)';
+          ctx.beginPath();
+          ctx.arc(0,0, inner*0.55, 0, Math.PI*2);
+          ctx.fill();
+
+        } else {
+          // rect / streamer
+          ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+
+          // highlight strip for foil feel
+          ctx.globalAlpha *= 0.40;
+          ctx.fillStyle = p.highlight;
+          ctx.fillRect(-p.w/2 + p.w*0.18, -p.h/2, Math.max(1.6, p.w*0.16), p.h);
+        }
+
+        ctx.restore();
+
+        // kill if offscreen
+        if(p.life > p.maxLife || p.y > H + 120 || p.x < -140 || p.x > W + 140){
+          return false;
+        }
+        return true;
+      }
+
+      function loop(){
+        ctx.clearRect(0,0,W,H);
+        // very subtle "air haze"
+        // (kept extremely light to not look like fog)
+        // ctx.fillStyle = 'rgba(255,255,255,0.008)';
+        // ctx.fillRect(0,0,W,H);
+
+        const next = [];
+        for(let i=0;i<particles.length;i++){
+          const p = particles[i];
+          p.life++;
+          if(drawParticle(p)) next.push(p);
+        }
+        particles = next;
+
+        if(particles.length){
+          raf = requestAnimationFrame(loop);
+        } else {
+          cancelAnimationFrame(raf);
+          raf = null;
+          ctx.clearRect(0,0,W,H);
+        }
+      }
+
+      window.addEventListener('resize', resize, {passive:true});
+      resize();
+
+      // play ONCE per page load (no touch bindings)
+      function safePlay(){
+        if(prefersReduced) return;
+        if(played) return;
+        // wait a beat so layout paints first
+        setTimeout(()=> spawnOnce(), 220);
+      }
+
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', safePlay, {once:true});
+      } else {
+        safePlay();
+      }
+    })();
+
     // Config change (keep compatibility)
     async function onConfigChange(config) {
       const accent = config.accent_color || defaultConfig.accent_color;
@@ -1489,6 +1747,7 @@ And they did. Beautifully.`,
       document.getElementById('footer-groom').textContent = config.groom_name || defaultConfig.groom_name;
       document.getElementById('footer-date').textContent = config.wedding_date || defaultConfig.wedding_date;
 
+      // Update injected accent-dependent pseudo elements
       const style = document.createElement('style');
       style.textContent = `
         .section-title::after { color: ${accent}; }
@@ -1567,121 +1826,9 @@ And they did. Beautifully.`,
         mapToEditPanelValues
       });
     }
-
-    /* =========================================================
-       ✅ CONFETTI: fires ONCE when page opens (and never again)
-       - Uses sessionStorage so it won't re-fire on in-page interactions
-       - Also stops/clears itself after ~1.6s
-       ========================================================= */
-    (function confettiOnceOnOpen(){
-      const KEY = 'confetti_fired_once_v1';
-      if (sessionStorage.getItem(KEY) === '1') return;
-      sessionStorage.setItem(KEY, '1');
-
-      const canvas = document.getElementById('confettiCanvas');
-      const ctx = canvas.getContext('2d');
-      let W = 0, H = 0, dpr = 1;
-      let particles = [];
-      let raf = null;
-
-      const palette = [
-        '#ff2d55','#ff9500','#ffd60a','#34c759','#00c7be','#32ade6',
-        '#007aff','#5856d6','#af52de','#ff3b30','#ffffff'
-      ];
-
-      function resize(){
-        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        W = window.innerWidth; H = window.innerHeight;
-        canvas.width = Math.floor(W * dpr);
-        canvas.height = Math.floor(H * dpr);
-        canvas.style.width = W + 'px';
-        canvas.style.height = H + 'px';
-        ctx.setTransform(dpr,0,0,dpr,0,0);
-      }
-      function rand(a,b){ return Math.random()*(b-a)+a }
-      function pick(){ return palette[(Math.random()*palette.length)|0] }
-
-      function spawn(x, y, count, speed){
-        for(let i=0;i<count;i++){
-          particles.push({
-            x,y,
-            vx: rand(-speed, speed),
-            vy: rand(-speed*0.9, -speed*0.2),
-            g: rand(0.12, 0.34),
-            w: rand(7, 20),
-            h: rand(10, 28),
-            r: rand(0, Math.PI*2),
-            vr: rand(-0.25, 0.25),
-            life: 0,
-            maxLife: rand(95, 180),
-            color: pick(),
-            shape: Math.random() < 0.25 ? 'circle' : 'rect',
-            drag: rand(0.985, 0.995)
-          });
-        }
-        if(!raf) raf = requestAnimationFrame(loop);
-      }
-
-      function loop(){
-        ctx.clearRect(0,0,W,H);
-        for(let i=particles.length-1;i>=0;i--){
-          const p = particles[i];
-          p.life++;
-          p.vx *= p.drag;
-          p.vy = p.vy * p.drag + p.g;
-          p.x += p.vx;
-          p.y += p.vy;
-          p.r += p.vr;
-
-          const t = p.life / p.maxLife;
-          const alpha = t > 0.75 ? Math.max(0, 1 - (t-0.75)/0.25) : 1;
-
-          ctx.save();
-          ctx.globalAlpha = alpha;
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.r);
-          ctx.fillStyle = p.color;
-          if(p.shape === 'circle'){
-            ctx.beginPath();
-            ctx.arc(0,0, Math.max(4, p.w*0.45), 0, Math.PI*2);
-            ctx.fill();
-          }else{
-            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-          }
-          ctx.restore();
-
-          if(p.life > p.maxLife || p.y > H + 80 || p.x < -80 || p.x > W + 80){
-            particles.splice(i,1);
-          }
-        }
-        if(particles.length) raf = requestAnimationFrame(loop);
-        else stop();
-      }
-
-      function stop(){
-        particles.length = 0;
-        if(raf){ cancelAnimationFrame(raf); raf = null; }
-        ctx.clearRect(0,0,W,H);
-      }
-
-      window.addEventListener('resize', resize, { passive:true });
-      resize();
-
-      // Fire after first paint so sizing/layout is settled
-      requestAnimationFrame(()=>{
-        const cx = W * 0.5;
-        const cy = Math.min(H * 0.35, 320);
-        spawn(cx, cy, 260, 12);
-        setTimeout(()=>spawn(cx, cy, 160, 9), 90);
-        setTimeout(()=>spawn(cx, cy, 120, 7), 200);
-        setTimeout(stop, 3000);
-      });
-    })();
   </script>
 
   <!-- Keep Cloudflare snippet if your hosting injects it -->
   <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ffdde6a48513b8',t:'MTc2MzM4OTIwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
-
-
