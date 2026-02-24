@@ -125,61 +125,6 @@
       margin: 30px 0;
     }
 
-    /* =========
-       Scratch-to-reveal (full cover + interactive)
-    ========= */
-    .scratch-wrap{
-      position: relative;
-      display: inline-block;
-    }
-    .scratch-date{
-      position: relative;
-      z-index: 1;
-    }
-    .scratch-canvas{
-      position:absolute;
-      inset: -10px -18px;
-      width: calc(100% + 36px);
-      height: calc(100% + 20px);
-      z-index: 2;
-      border-radius: 16px;
-      cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: none;
-    }
-    .scratch-hint{
-      position:absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 3;
-      pointer-events: none;
-
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-
-      /* Burnt orange text */
-      color: #cc5500;
-      text-shadow: 0 10px 26px rgba(0,0,0,0.55);
-
-      padding: 10px 14px;
-      border-radius: 999px;
-      border: 1px solid rgba(204, 85, 0, 0.55);
-      background: rgba(0,0,0,0.28);
-      backdrop-filter: blur(10px);
-    }
-    .scratch-wrap.revealed .scratch-hint{
-      opacity: 0;
-      transition: opacity .25s ease;
-    }
-    .scratch-wrap.revealed .scratch-canvas{
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity .35s ease;
-    }
-
     /* Sleek countdown container */
     .countdown-container {
       margin-top: 50px;
@@ -678,7 +623,7 @@
     }
 
     /* =========
-       Registry
+       Registry (keep your swish pill + add sleek icons)
     ========= */
     .registry-section { background: #f9f9f9; }
     .registry-content {
@@ -803,7 +748,7 @@
     }
 
     /* =========
-       Footer
+       Footer (original)
     ========= */
     .footer {
       background: #1a1a2e;
@@ -824,7 +769,7 @@
     }
 
     /* =========
-       Modal
+       Modal (for Swish + Bank details)
     ========= */
     dialog{
       width: min(760px, calc(100% - 28px));
@@ -942,16 +887,6 @@
       transform: translateX(-50%) translateY(-4px);
     }
 
-    /* Confetti canvas */
-    #confettiCanvas{
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 2000;
-    }
-
     /* =========
        Responsive
     ========= */
@@ -977,8 +912,8 @@
 </head>
 
 <body>
-  <!-- Confetti canvas -->
-  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+  <!-- ✅ Confetti canvas (fixed overlay) -->
+  <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:2500"></canvas>
 
   <!-- Hero Section -->
   <div class="hero">
@@ -994,12 +929,7 @@
         <span class="floral-decoration">🌸</span>
       </div>
 
-      <!-- Scratch-to-reveal date -->
-      <div class="scratch-wrap" id="scratchWrap" aria-label="Scratch to reveal the date">
-        <div class="date scratch-date" id="wedding-date">Saturday, July 4th, 2026</div>
-        <div class="scratch-hint" id="scratchHint">Scratch to reveal</div>
-        <canvas class="scratch-canvas" id="scratchCanvas"></canvas>
-      </div>
+      <div class="date" id="wedding-date">Saturday, July 4th, 2026</div>
 
       <div class="countdown-container">
         <div class="countdown-label" id="countdown-label">Days Until Forever</div>
@@ -1069,13 +999,11 @@
     </div>
 
     <div class="events-grid">
-      <!-- Ceremony -->
       <div class="event-card">
         <div class="event-icon">💒</div>
         <div class="event-title">Ceremony</div>
         <div class="event-info" id="ceremony-venue">Hedvig Eleonora Church</div>
         <div class="event-info" id="ceremony-address">Storgatan 2, 114 51 Stockholm</div>
-
         <div class="event-time"><span>🕓</span><span id="ceremony-time">16:30 PM</span></div>
 
         <div class="event-actions">
@@ -1094,13 +1022,11 @@
         </div>
       </div>
 
-      <!-- Reception -->
       <div class="event-card">
         <div class="event-icon">🥂</div>
         <div class="event-title">Reception</div>
         <div class="event-info" id="reception-venue">Dinner Party at Sjöfartshuset Stockholm</div>
         <div class="event-info" id="reception-address">Skeppsbron 10, Stockholm, Sweden</div>
-
         <div class="event-time"><span>🍾</span><span id="reception-time">18:30 PM</span></div>
 
         <div class="event-actions">
@@ -1437,9 +1363,7 @@ And they did. Beautifully.`,
       accent_color: "#d4af37"
     };
 
-    // =========
     // Countdown Timer
-    // =========
     function updateCountdown() {
       const weddingDate = new Date('2026-07-04T16:30:00').getTime();
       const now = new Date().getTime();
@@ -1458,9 +1382,7 @@ And they did. Beautifully.`,
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // =========
     // Smooth Scroll Navigation
-    // =========
     function scrollToSection(id) {
       const element = document.getElementById(id);
       if (element) {
@@ -1470,17 +1392,13 @@ And they did. Beautifully.`,
       }
     }
 
-    // =========
     // RSVP Button Click Handler
-    // =========
     document.getElementById('rsvp-button').addEventListener('click', function(e) {
       e.preventDefault();
       window.open('https://forms.gle/XW76LzvjBUT8nE618', '_blank', 'noopener,noreferrer');
     });
 
-    // =========
-    // Toggle maps
-    // =========
+    // Toggle maps (sleek)
     function toggleMap(id){
       const el = document.getElementById(id);
       if(!el) return;
@@ -1488,13 +1406,12 @@ And they did. Beautifully.`,
       el.style.display = isOpen ? 'none' : 'block';
     }
 
-    // =========
     // Modals
-    // =========
     function openSwish(){ document.getElementById('swishModal').showModal(); }
     function openBank(){ document.getElementById('bankModal').showModal(); }
     function closeDialog(id){ document.getElementById(id).close(); }
 
+    // Close when clicking outside
     ['swishModal','bankModal'].forEach(id=>{
       const d = document.getElementById(id);
       if(!d) return;
@@ -1505,9 +1422,7 @@ And they did. Beautifully.`,
       });
     });
 
-    // =========
     // Toast + copy
-    // =========
     function toast(msg){
       const t = document.getElementById('toast');
       t.textContent = msg || 'Copied';
@@ -1536,418 +1451,7 @@ And they did. Beautifully.`,
       }
     }
 
-    // ==========================================================
-    // Confetti (bigger + more colorful + more intense)
-    // ==========================================================
-    const confetti = (() => {
-      const canvas = document.getElementById('confettiCanvas');
-      const ctx = canvas.getContext('2d', { alpha: true });
-
-      let W = 0, H = 0, dpr = 1;
-      let particles = [];
-      let raf = null;
-
-      const PALETTE = [
-        '#ff2d55', '#ff9500', '#ffcc00', '#34c759', '#00c7be',
-        '#32ade6', '#007aff', '#5856d6', '#af52de', '#ff3b30',
-        '#ffffff', '#ffd60a', '#d4af37'
-      ];
-
-      function resize(){
-        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        W = Math.floor(window.innerWidth);
-        H = Math.floor(window.innerHeight);
-        canvas.width = Math.floor(W * dpr);
-        canvas.height = Math.floor(H * dpr);
-        canvas.style.width = W + 'px';
-        canvas.style.height = H + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-
-      function rand(min, max){ return Math.random() * (max - min) + min; }
-      function pick(arr){ return arr[(Math.random() * arr.length) | 0]; }
-
-      function spawnBurst(opts = {}){
-        const count = opts.count ?? 260;
-        const cx = opts.x ?? (W * 0.5);
-        const cy = opts.y ?? (H * 0.28);
-        const spread = opts.spread ?? Math.PI * 2;
-        const speed = opts.speed ?? 10;
-
-        for(let i=0;i<count;i++){
-          const a = rand(-spread/2, spread/2);
-          const v = rand(speed * 0.55, speed * 1.35);
-
-          const w = rand(7, 16);
-          const h = rand(10, 22);
-
-          particles.push({
-            x: cx,
-            y: cy,
-            vx: Math.cos(a) * v,
-            vy: Math.sin(a) * v - rand(4, 9),
-            g: rand(0.10, 0.20),
-            drag: rand(0.986, 0.995),
-            w,
-            h,
-            r: rand(0, Math.PI*2),
-            vr: rand(-0.28, 0.28),
-            life: 0,
-            maxLife: rand(140, 220),
-            color: pick(PALETTE),
-            shape: (Math.random() < 0.25 ? 'circle' : 'rect')
-          });
-        }
-        start();
-      }
-
-      function start(){
-        if(raf) return;
-        raf = requestAnimationFrame(tick);
-      }
-      function stop(){
-        if(raf){
-          cancelAnimationFrame(raf);
-          raf = null;
-        }
-      }
-
-      function tick(){
-        ctx.clearRect(0,0,W,H);
-
-        for(let i=particles.length-1;i>=0;i--){
-          const p = particles[i];
-          p.life++;
-
-          p.vx *= p.drag;
-          p.vy = (p.vy * p.drag) + p.g;
-
-          p.x += p.vx;
-          p.y += p.vy;
-
-          p.r += p.vr;
-
-          const t = p.life / p.maxLife;
-          const alpha = t > 0.72 ? (1 - (t - 0.72)/0.28) : 1;
-
-          ctx.save();
-          ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.r);
-
-          ctx.fillStyle = p.color;
-
-          if(p.shape === 'circle'){
-            ctx.beginPath();
-            ctx.arc(0, 0, Math.max(5, p.w * 0.45), 0, Math.PI*2);
-            ctx.fill();
-          } else {
-            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
-          }
-
-          ctx.restore();
-
-          if(p.life > p.maxLife || p.y > H + 80 || p.x < -80 || p.x > W + 80){
-            particles.splice(i,1);
-          }
-        }
-
-        if(particles.length === 0){
-          stop();
-          return;
-        }
-        raf = requestAnimationFrame(tick);
-      }
-
-      window.addEventListener('resize', resize, { passive: true });
-      resize();
-
-      return {
-        resize,
-        burst: spawnBurst,
-        megaBurst: (x, y) => {
-          spawnBurst({ x, y, count: 240, speed: 11 });
-          setTimeout(() => spawnBurst({ x, y, count: 180, speed: 9 }), 120);
-          setTimeout(() => spawnBurst({ x, y, count: 140, speed: 8 }), 240);
-        }
-      };
-    })();
-
-    // ==========================================================
-    // Scratch-to-reveal (Mobile: drag; Desktop: move mouse)
-    // FULL OPAQUE cover (no transparency leak)
-    // ==========================================================
-    const scratch = (() => {
-      const wrap = document.getElementById('scratchWrap');
-      const canvas = document.getElementById('scratchCanvas');
-      const hint = document.getElementById('scratchHint');
-      const ctx = canvas.getContext('2d');
-
-      let dpr = 1;
-      let revealed = false;
-
-      let isPointerActive = false;   // touch/pen requires down
-      let isHoverScratching = false; // mouse scratches on hover
-      let last = null;
-
-      const BRUSH = {
-        radius: 22,
-        feather: 0.55
-      };
-
-      function setCanvasSizeToWrap(){
-        const rect = wrap.getBoundingClientRect();
-        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-        const cssW = Math.max(1, rect.width + 36);
-        const cssH = Math.max(1, rect.height + 20);
-
-        canvas.style.width = cssW + 'px';
-        canvas.style.height = cssH + 'px';
-        canvas.width = Math.floor(cssW * dpr);
-        canvas.height = Math.floor(cssH * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      }
-
-      function roundRect(c, x, y, w, h, r){
-        const rr = Math.min(r, w/2, h/2);
-        c.beginPath();
-        c.moveTo(x+rr, y);
-        c.arcTo(x+w, y, x+w, y+h, rr);
-        c.arcTo(x+w, y+h, x, y+h, rr);
-        c.arcTo(x, y+h, x, y, rr);
-        c.arcTo(x, y, x+w, y, rr);
-        c.closePath();
-      }
-
-      function drawCover(){
-        const w = canvas.width / dpr;
-        const h = canvas.height / dpr;
-
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.clearRect(0,0,w,h);
-
-        // 100% opaque base cover
-        const base = ctx.createLinearGradient(0,0,w,h);
-        base.addColorStop(0, 'rgba(10,12,28,1)');
-        base.addColorStop(0.5, 'rgba(18,24,55,1)');
-        base.addColorStop(1, 'rgba(12,14,32,1)');
-
-        ctx.fillStyle = base;
-        roundRect(ctx, 0, 0, w, h, 16);
-        ctx.fill();
-
-        // subtle sheen (still opaque)
-        const sheen = ctx.createLinearGradient(0, h*0.2, w, h*0.8);
-        sheen.addColorStop(0, 'rgba(255,255,255,0.04)');
-        sheen.addColorStop(0.45, 'rgba(212,175,55,0.06)');
-        sheen.addColorStop(1, 'rgba(255,255,255,0.03)');
-        ctx.fillStyle = sheen;
-        roundRect(ctx, 0, 0, w, h, 16);
-        ctx.fill();
-
-        // grain texture WITHOUT transparency leaks (safe)
-        {
-          const noise = document.createElement('canvas');
-          const nw = Math.max(80, Math.floor(w / 2));
-          const nh = Math.max(50, Math.floor(h / 2));
-          noise.width = nw;
-          noise.height = nh;
-
-          const nctx = noise.getContext('2d');
-          const img = nctx.createImageData(nw, nh);
-          const d = img.data;
-
-          for (let i = 0; i < d.length; i += 4) {
-            const n = (Math.random() * 255) | 0;
-            d[i] = n; d[i+1] = n; d[i+2] = n;
-            d[i+3] = 255; // fully opaque pixels
-          }
-          nctx.putImageData(img, 0, 0);
-
-          ctx.save();
-          ctx.globalCompositeOperation = 'soft-light';
-          ctx.globalAlpha = 0.22;
-          ctx.imageSmoothingEnabled = true;
-          ctx.drawImage(noise, 0, 0, w, h);
-          ctx.restore();
-        }
-
-        // border
-        ctx.strokeStyle = 'rgba(255,255,255,0.14)';
-        ctx.lineWidth = 1;
-        roundRect(ctx, 0.5, 0.5, w-1, h-1, 16);
-        ctx.stroke();
-
-        // scratch erases
-        ctx.globalCompositeOperation = 'destination-out';
-      }
-
-      function getPoint(evt){
-        const rect = canvas.getBoundingClientRect();
-        let clientX, clientY;
-        if(evt.touches && evt.touches[0]){
-          clientX = evt.touches[0].clientX;
-          clientY = evt.touches[0].clientY;
-        } else {
-          clientX = evt.clientX;
-          clientY = evt.clientY;
-        }
-        return { x: clientX - rect.left, y: clientY - rect.top };
-      }
-
-      function scratchDot(x,y){
-        const r = BRUSH.radius;
-        const grd = ctx.createRadialGradient(x,y, 0, x,y, r);
-        grd.addColorStop(0, `rgba(0,0,0,1)`);
-        grd.addColorStop(BRUSH.feather, `rgba(0,0,0,1)`);
-        grd.addColorStop(1, `rgba(0,0,0,0)`);
-        ctx.fillStyle = grd;
-        ctx.beginPath();
-        ctx.arc(x,y,r,0,Math.PI*2);
-        ctx.fill();
-      }
-
-      function scratchLine(a,b){
-        const dx = b.x - a.x;
-        const dy = b.y - a.y;
-        const dist = Math.hypot(dx,dy);
-        const step = Math.max(4, BRUSH.radius * 0.32);
-        const n = Math.ceil(dist / step);
-        for(let i=0;i<=n;i++){
-          const t = i / n;
-          scratchDot(a.x + dx*t, a.y + dy*t);
-        }
-      }
-
-      function checkReveal(){
-        const w = canvas.width;
-        const h = canvas.height;
-
-        const sampleW = 160;
-        const sampleH = 60;
-
-        const off = document.createElement('canvas');
-        off.width = sampleW;
-        off.height = sampleH;
-        const octx = off.getContext('2d');
-        octx.drawImage(canvas, 0, 0, w, h, 0, 0, sampleW, sampleH);
-
-        const img = octx.getImageData(0,0,sampleW,sampleH).data;
-        let cleared = 0;
-        const total = sampleW * sampleH;
-
-        for(let i=3;i<img.length;i+=4){
-          if(img[i] < 25) cleared++;
-        }
-        const pct = cleared / total;
-
-        if(pct > 0.62) reveal();
-      }
-
-      function reveal(){
-        if(revealed) return;
-        revealed = true;
-        wrap.classList.add('revealed');
-
-        const rect = wrap.getBoundingClientRect();
-        const x = rect.left + rect.width/2;
-        const y = rect.top + rect.height/2;
-
-        confetti.megaBurst(x, y);
-      }
-
-      // Mouse hover scratch
-      function onMouseEnter(){
-        if(revealed) return;
-        isHoverScratching = true;
-        last = null;
-        if(hint) hint.style.opacity = '0.25';
-      }
-      function onMouseLeave(){
-        isHoverScratching = false;
-        last = null;
-        if(!revealed) checkReveal();
-        if(hint) hint.style.opacity = '';
-      }
-
-      // Touch/pen press scratch
-      function onPointerDown(evt){
-        if(revealed) return;
-        if(evt.pointerType === 'mouse') return;
-        isPointerActive = true;
-        last = getPoint(evt);
-        scratchDot(last.x, last.y);
-        if(hint) hint.style.opacity = '0.25';
-        evt.preventDefault?.();
-      }
-      function onPointerUp(){
-        if(!isPointerActive) return;
-        isPointerActive = false;
-        last = null;
-        if(!revealed) checkReveal();
-        if(hint) hint.style.opacity = '';
-      }
-
-      function onPointerMove(evt){
-        if(revealed) return;
-
-        if(evt.pointerType === 'mouse' && isHoverScratching){
-          const p = getPoint(evt);
-          if(last) scratchLine(last, p);
-          else scratchDot(p.x, p.y);
-          last = p;
-          if(Math.random() < 0.10) checkReveal();
-          return;
-        }
-
-        if((evt.pointerType === 'touch' || evt.pointerType === 'pen') && isPointerActive){
-          const p = getPoint(evt);
-          if(last) scratchLine(last, p);
-          else scratchDot(p.x, p.y);
-          last = p;
-          if(Math.random() < 0.12) checkReveal();
-          evt.preventDefault?.();
-        }
-      }
-
-      function reset(){
-        revealed = false;
-        wrap.classList.remove('revealed');
-        setCanvasSizeToWrap();
-        drawCover();
-      }
-
-      function init(){
-        canvas.addEventListener('mouseenter', onMouseEnter);
-        canvas.addEventListener('mouseleave', onMouseLeave);
-
-        canvas.addEventListener('pointerdown', onPointerDown);
-        window.addEventListener('pointermove', onPointerMove, { passive: false });
-        window.addEventListener('pointerup', onPointerUp);
-
-        // iOS: prevent scroll while scratching
-        canvas.addEventListener('touchstart', (e)=>e.preventDefault(), { passive:false });
-        canvas.addEventListener('touchmove',  (e)=>e.preventDefault(), { passive:false });
-
-        window.addEventListener('resize', () => {
-          const wasRevealed = revealed;
-          reset();
-          if(wasRevealed) reveal();
-        }, { passive: true });
-
-        reset();
-      }
-
-      return { init, reset };
-    })();
-
-    window.addEventListener('DOMContentLoaded', () => {
-      scratch.init();
-    });
-
-    // =========
     // Config change (keep compatibility)
-    // =========
     async function onConfigChange(config) {
       const accent = config.accent_color || defaultConfig.accent_color;
       document.documentElement.style.setProperty('--accent', accent);
@@ -2003,11 +1507,6 @@ And they did. Beautifully.`,
         .whenwhere-divider::after { color: ${accent}; }
       `;
       document.head.appendChild(style);
-
-      // Re-fit scratch overlay after date text changes
-      setTimeout(() => {
-        scratch.reset();
-      }, 0);
     }
 
     function mapToCapabilities(config) {
@@ -2068,6 +1567,116 @@ And they did. Beautifully.`,
         mapToEditPanelValues
       });
     }
+
+    /* =========================================================
+       ✅ CONFETTI: fires ONCE when page opens (and never again)
+       - Uses sessionStorage so it won't re-fire on in-page interactions
+       - Also stops/clears itself after ~1.6s
+       ========================================================= */
+    (function confettiOnceOnOpen(){
+      const KEY = 'confetti_fired_once_v1';
+      if (sessionStorage.getItem(KEY) === '1') return;
+      sessionStorage.setItem(KEY, '1');
+
+      const canvas = document.getElementById('confettiCanvas');
+      const ctx = canvas.getContext('2d');
+      let W = 0, H = 0, dpr = 1;
+      let particles = [];
+      let raf = null;
+
+      const palette = [
+        '#ff2d55','#ff9500','#ffd60a','#34c759','#00c7be','#32ade6',
+        '#007aff','#5856d6','#af52de','#ff3b30','#ffffff'
+      ];
+
+      function resize(){
+        dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+        W = window.innerWidth; H = window.innerHeight;
+        canvas.width = Math.floor(W * dpr);
+        canvas.height = Math.floor(H * dpr);
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+      function rand(a,b){ return Math.random()*(b-a)+a }
+      function pick(){ return palette[(Math.random()*palette.length)|0] }
+
+      function spawn(x, y, count, speed){
+        for(let i=0;i<count;i++){
+          particles.push({
+            x,y,
+            vx: rand(-speed, speed),
+            vy: rand(-speed*0.9, -speed*0.2),
+            g: rand(0.12, 0.34),
+            w: rand(7, 20),
+            h: rand(10, 28),
+            r: rand(0, Math.PI*2),
+            vr: rand(-0.25, 0.25),
+            life: 0,
+            maxLife: rand(95, 180),
+            color: pick(),
+            shape: Math.random() < 0.25 ? 'circle' : 'rect',
+            drag: rand(0.985, 0.995)
+          });
+        }
+        if(!raf) raf = requestAnimationFrame(loop);
+      }
+
+      function loop(){
+        ctx.clearRect(0,0,W,H);
+        for(let i=particles.length-1;i>=0;i--){
+          const p = particles[i];
+          p.life++;
+          p.vx *= p.drag;
+          p.vy = p.vy * p.drag + p.g;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.r += p.vr;
+
+          const t = p.life / p.maxLife;
+          const alpha = t > 0.75 ? Math.max(0, 1 - (t-0.75)/0.25) : 1;
+
+          ctx.save();
+          ctx.globalAlpha = alpha;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.r);
+          ctx.fillStyle = p.color;
+          if(p.shape === 'circle'){
+            ctx.beginPath();
+            ctx.arc(0,0, Math.max(4, p.w*0.45), 0, Math.PI*2);
+            ctx.fill();
+          }else{
+            ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+          }
+          ctx.restore();
+
+          if(p.life > p.maxLife || p.y > H + 80 || p.x < -80 || p.x > W + 80){
+            particles.splice(i,1);
+          }
+        }
+        if(particles.length) raf = requestAnimationFrame(loop);
+        else stop();
+      }
+
+      function stop(){
+        particles.length = 0;
+        if(raf){ cancelAnimationFrame(raf); raf = null; }
+        ctx.clearRect(0,0,W,H);
+      }
+
+      window.addEventListener('resize', resize, { passive:true });
+      resize();
+
+      // Fire after first paint so sizing/layout is settled
+      requestAnimationFrame(()=>{
+        const cx = W * 0.5;
+        const cy = Math.min(H * 0.35, 320);
+        spawn(cx, cy, 260, 12);
+        setTimeout(()=>spawn(cx, cy, 160, 9), 90);
+        setTimeout(()=>spawn(cx, cy, 120, 7), 200);
+        setTimeout(stop, 1600);
+      });
+    })();
   </script>
 
   <!-- Keep Cloudflare snippet if your hosting injects it -->
