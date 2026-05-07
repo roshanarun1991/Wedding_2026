@@ -1165,8 +1165,8 @@
     <div class="section">
       <h2 class="section-title">RSVP</h2>
       <div class="rsvp-content">
-        <div class="rsvp-message" id="rsvp-message">Please RSVP before 4th May, 2026</div>
-        <a href="#" class="rsvp-button" id="rsvp-button">Respond Here <span style="color:var(--accent); font-weight:900;">↗</span></a>
+        <div class="rsvp-message" id="rsvp-message">Thank you so much for wanting to celebrate with us. Our RSVP deadline was May 4, 2026, and we have now shared our final guest count with the venue. Because of this, we are no longer able to accept new RSVP responses. We are truly grateful for your love and understanding.</div>
+        <a href="#rsvp-message" class="rsvp-button" id="rsvp-button" aria-label="RSVP closed">RSVP Closed</a>
         <div style="margin-top: 24px; font-size: 16px;" id="rsvp-contact">
           Contact us at: +46 72835-9978
         </div>
@@ -1374,7 +1374,7 @@ Now they are getting married — proof that when two people collide, the univers
 
 And they did. Beautifully.`,
       schedule_intro: "Join us for a day of celebration, love, and unforgettable memories as we blend two beautiful cultures",
-      rsvp_message: "Please RSVP before 4th May, 2026",
+      rsvp_message: "Thank you so much for wanting to celebrate with us. Our RSVP deadline was May 4, 2026, and we have now shared our final guest count with the venue. Because of this, we are no longer able to accept new RSVP responses. We are truly grateful for your love and understanding.",
       rsvp_contact: "Contact us at: +46 72835-9978",
       registry_text: "Having you celebrate with us is the most meaningful gift we could receive. Please know that your love and presence are more than enough, and there is absolutely no obligation to give a gift. Should you wish to honor us with a present, we kindly invite you to contribute to our Travel Dream, exploring different parts of the world, helping us create memories that will last a lifetime.",
       accent_color: "#d4af37"
@@ -1412,7 +1412,7 @@ And they did. Beautifully.`,
     // RSVP Button Click Handler
     document.getElementById('rsvp-button').addEventListener('click', function(e) {
       e.preventDefault();
-      window.open('https://forms.gle/XW76LzvjBUT8nE618', '_blank', 'noopener,noreferrer');
+      document.getElementById("rsvp-message").scrollIntoView({ behavior: "smooth", block: "center" });
     });
 
     // Toggle maps (sleek)
@@ -1739,7 +1739,7 @@ And they did. Beautifully.`,
       }
 
       document.getElementById('schedule-intro').textContent = config.schedule_intro || defaultConfig.schedule_intro;
-      document.getElementById('rsvp-message').textContent = config.rsvp_message || defaultConfig.rsvp_message;
+      document.getElementById('rsvp-message').textContent = defaultConfig.rsvp_message;
       document.getElementById('rsvp-contact').textContent = config.rsvp_contact || defaultConfig.rsvp_contact;
       document.getElementById('registry-text').textContent = config.registry_text || defaultConfig.registry_text;
 
@@ -1811,7 +1811,7 @@ And they did. Beautifully.`,
         ["reception_time", config.reception_time || defaultConfig.reception_time],
         ["story_text", config.story_text || defaultConfig.story_text],
         ["schedule_intro", config.schedule_intro || defaultConfig.schedule_intro],
-        ["rsvp_message", config.rsvp_message || defaultConfig.rsvp_message],
+        ["rsvp_message", defaultConfig.rsvp_message],
         ["rsvp_contact", config.rsvp_contact || defaultConfig.rsvp_contact],
         ["registry_text", config.registry_text || defaultConfig.registry_text],
         ["accent_color", config.accent_color || defaultConfig.accent_color]
